@@ -25,5 +25,13 @@ module.exports = {
     async listAgeMinor(req, res){
         const response = await User.find({age: {$lte: req.params.x}});
         res.json(response);
+    },
+    async listBySex(req, res){
+        const response = await User.find({sex: req.params.x});
+        res.json(response);
+    },
+    listManyFields(req, res){
+        const response = req.query.fields;
+        res.json(response);
     }
 }
