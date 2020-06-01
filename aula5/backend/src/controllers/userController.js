@@ -31,11 +31,39 @@ module.exports = {
         res.json(novo);
     },
     //Persistir no banco TODOS os usuários do Git
-    
-    //Persistir no banco do usuários do Git antes de 2020
     async getAllUsersGit(req, res){
-        const response = await axios.get();
+        var lista = [];
+        var response = await axios.get(`https://api.github.com/users?page=1&per_page=1000`);
+        var {link} = response.headers;
+        const x = response.data;
+        //while(link.includes('next')){ //ERRO 403 NAO TENHO PERMISSAO
+            for(i = 0; i < response.data.length; i++){
+                const {login, name, avatar_url, company, email, public_repos, followers, bio} = response.data[i];
+                const novo = {
+                    login : login,
+                    name : name,
+                    avatar_url : avatar_url,
+                    company : company, 
+                    email : email,
+                    public_repos : public_repos, 
+                    followers : followers, 
+                    biografia : bio
+                }
+                lista.push(novo);
+            }
+            console.log(lista.length);
+            link = String(link);
+            link = link.split('>');
+            link = link[0].split('<');
+            //response = await axios.get(link[1]);
+           // var {link} = response.headers;
+        //}
+
+        res.status(200).json();
     }
+
+    //Persistir no banco do usuários do Git antes de 2020
+
 
     //Novo backend origen:[lat, long] destino:[lat, long] => distancia
 
